@@ -1,0 +1,357 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    color: #eee;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    position: relative;
+    text-align: center;
+    padding: 48px 0 28px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #aaa;
+    font-size: 1.1rem;
+}
+
+.lang-switch {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    display: inline-flex;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.lang-switch button {
+    background: transparent;
+    border: none;
+    color: #bbb;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.lang-switch button:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-switch button.active {
+    background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+    color: #fff;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-btn.active {
+    background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+    border-color: transparent;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.card h2 {
+    color: #00d4ff;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #00d4ff;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.btn {
+    padding: 12px 28px;
+    background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+}
+
+.result-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    font-family: "Courier New", monospace;
+}
+
+.result-box h3 {
+    color: #00d4ff;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.key-display {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 20px;
+    font-size: 0.9rem;
+}
+
+.key-label {
+    color: #7b2cbf;
+    font-weight: bold;
+}
+
+.key-value {
+    color: #fff;
+    word-break: break-all;
+}
+
+.signature-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.sig-component {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.sig-label {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.sig-value {
+    color: #fff;
+    word-break: break-all;
+}
+
+.status {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.status.success {
+    background: rgba(0, 255, 100, 0.2);
+    border: 1px solid rgba(0, 255, 100, 0.5);
+    color: #00ff64;
+}
+
+.status.error {
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    color: #ff4444;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.info-text {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.banner {
+    background: rgba(123, 44, 191, 0.18);
+    border: 1px solid rgba(123, 44, 191, 0.4);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    color: #d7c4f5;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-table th {
+    color: #00d4ff;
+    font-weight: bold;
+}
+
+.comparison-table td {
+    color: #ccc;
+}
+
+.pem-display {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(123, 44, 191, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    word-break: break-all;
+    white-space: pre-wrap;
+    color: #aaa;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.site-footer {
+    text-align: center;
+    color: #777;
+    font-size: 0.85rem;
+    padding: 24px 0 12px;
+}
+
+@media (max-width: 768px) {
+    .grid-2,
+    .signature-display,
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+        padding-top: 28px;
+    }
+
+    .lang-switch {
+        position: static;
+        margin: 0 auto 16px;
+        display: flex;
+        width: fit-content;
+    }
+}
