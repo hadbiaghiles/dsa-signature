@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA – Digital Signature Algorithm</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button type="button" data-lang="en" class="active" aria-pressed="true">English</button>
+                <button type="button" data-lang="fr" aria-pressed="false">Français</button>
+            </div>
+            <h1 data-i18n="appTitle">DSA – Digital Signature Algorithm</h1>
+            <p data-i18n="appSubtitle">Interactive demo: manual DSA math in the browser + Web Crypto ECDSA</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" type="button" data-i18n="tabManual" onclick="showTab('manual', this)">Manual implementation</button>
+            <button class="tab-btn" type="button" data-i18n="tabLibrary" onclick="showTab('library', this)">Web Crypto ECDSA</button>
+            <button class="tab-btn" type="button" data-i18n="tabCompare" onclick="showTab('compare', this)">Comparison</button>
+        </div>
+
+        <div id="manual" class="tab-content active">
+            <div class="card">
+                <h2 data-i18n="manualKeysTitle">Key generation</h2>
+                <p class="info-text" data-i18n="manualKeysInfo">Generates a DSA key pair with parameters p, q, α and private key d. Educational small primes (p ≈ 20,000–100,000) — not secure.</p>
+                <button class="btn" id="btn-generate" type="button" data-i18n="btnGenerateKeys" onclick="generateKeys()">Generate keys</button>
+                <div id="manual-keys-result" class="hidden">
+                    <div class="result-box">
+                        <h3 data-i18n="publicKeyTitle">Public key (p, q, α, β)</h3>
+                        <div class="key-display" id="public-key-display"></div>
+                        <h3 style="margin-top: 20px;" data-i18n="privateKeyTitle">Private key (d)</h3>
+                        <div class="key-display" id="private-key-display"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 data-i18n="signTitle">Sign a message</h2>
+                <p class="info-text" data-i18n="signInfo">Sign a message with the generated private key. The signature is a pair (r, s).</p>
+                <div class="form-group">
+                    <label for="sign-message" data-i18n="labelMessageToSign">Message to sign</label>
+                    <textarea id="sign-message" data-i18n-placeholder="placeholderMessage" placeholder="Enter your message here…"></textarea>
+                </div>
+                <button class="btn" type="button" onclick="signMessage()" id="btn-sign" data-i18n="btnSign" disabled>Sign message</button>
+                <div id="manual-sign-result" class="hidden">
+                    <div class="result-box">
+                        <h3 data-i18n="signatureTitle">Signature (r, s)</h3>
+                        <div class="signature-display" id="signature-display"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 data-i18n="verifyTitle">Verify a signature</h2>
+                <p class="info-text" data-i18n="verifyInfo">Verify a signature with the public key.</p>
+                <div class="form-group">
+                    <label for="verify-message" data-i18n="labelMessage">Message</label>
+                    <input type="text" id="verify-message" data-i18n-placeholder="placeholderVerifyMessage" placeholder="Message to verify">
+                </div>
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="verify-r">r</label>
+                        <input type="text" id="verify-r" data-i18n-placeholder="placeholderR" placeholder="Value of r">
+                    </div>
+                    <div class="form-group">
+                        <label for="verify-s">s</label>
+                        <input type="text" id="verify-s" data-i18n-placeholder="placeholderS" placeholder="Value of s">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label for="verify-p">p</label>
+                        <input type="text" id="verify-p" data-i18n-placeholder="placeholderP" placeholder="Value of p">
+                    </div>
+                    <div class="form-group">
+                        <label for="verify-q">q</label>
+                        <input type="text" id="verify-q" data-i18n-placeholder="placeholderQ" placeholder="Value of q">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label for="verify-alpha">α (alpha)</label>
+                        <input type="text" id="verify-alpha" data-i18n-placeholder="placeholderAlpha" placeholder="Value of α">
+                    </div>
+                    <div class="form-group">
+                        <label for="verify-beta">β (beta)</label>
+                        <input type="text" id="verify-beta" data-i18n-placeholder="placeholderBeta" placeholder="Value of β">
+                    </div>
+                </div>
+                <button class="btn" id="btn-verify" type="button" data-i18n="btnVerify" onclick="verifySignature()">Verify signature</button>
+                <div id="manual-verify-result"></div>
+            </div>
+        </div>
+
+        <div id="library" class="tab-content">
+            <p class="banner" data-i18n="libBanner">Production-grade path on GitHub Pages: Web Crypto API ECDSA P-256 (browser). The original Python lab used the cryptography library with DSA-1024 and PEM keys.</p>
+            <div class="card">
+                <h2 data-i18n="libKeysTitle">Key generation (Web Crypto ECDSA P-256)</h2>
+                <p class="info-text" data-i18n="libKeysInfo">Generates an ECDSA P-256 key pair via the Web Crypto API. Keys are shown as JWK JSON (not PEM DSA).</p>
+                <button class="btn" id="btn-library-generate" type="button" data-i18n="btnGenerateKeys" onclick="generateLibraryKeys()">Generate keys</button>
+                <div id="library-keys-result" class="hidden">
+                    <div class="result-box">
+                        <h3 data-i18n="libPrivateJwk">Private key (JWK)</h3>
+                        <div class="pem-display" id="library-private-key"></div>
+                        <h3 style="margin-top: 20px;" data-i18n="libPublicJwk">Public key (JWK)</h3>
+                        <div class="pem-display" id="library-public-key"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 data-i18n="libSignTitle">Sign (Web Crypto ECDSA)</h2>
+                <p class="info-text" data-i18n="libSignInfo">Sign with the ECDSA P-256 private key. The signature is a raw (r‖s) hex string.</p>
+                <div class="form-group">
+                    <label for="library-sign-message" data-i18n="labelMessageToSign">Message to sign</label>
+                    <textarea id="library-sign-message" data-i18n-placeholder="placeholderMessage" placeholder="Enter your message here…"></textarea>
+                </div>
+                <button class="btn" type="button" onclick="librarySignMessage()" id="btn-library-sign" data-i18n="btnSignShort" disabled>Sign</button>
+                <div id="library-sign-result" class="hidden">
+                    <div class="result-box">
+                        <h3 data-i18n="libSignatureTitle">Signature (hex)</h3>
+                        <div class="pem-display" id="library-signature"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 data-i18n="libVerifyTitle">Verify (Web Crypto ECDSA)</h2>
+                <p class="info-text" data-i18n="libVerifyInfo">Verify with the ECDSA P-256 public key kept in this tab.</p>
+                <div class="form-group">
+                    <label for="library-verify-message" data-i18n="labelMessage">Message</label>
+                    <input type="text" id="library-verify-message" data-i18n-placeholder="placeholderVerifyMessage" placeholder="Message to verify">
+                </div>
+                <div class="form-group">
+                    <label for="library-verify-sig" data-i18n="labelSignatureHex">Signature (hex)</label>
+                    <textarea id="library-verify-sig" data-i18n-placeholder="placeholderSigHex" placeholder="Hexadecimal signature"></textarea>
+                </div>
+                <button class="btn" type="button" onclick="libraryVerifySignature()" id="btn-library-verify" data-i18n="btnVerifyShort" disabled>Verify</button>
+                <div id="library-verify-result"></div>
+            </div>
+        </div>
+
+        <div id="compare" class="tab-content">
+            <div class="card">
+                <h2 data-i18n="compareTitle">Implementation comparison</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="thFeature">Characteristic</th>
+                            <th data-i18n="thManual">Manual DSA (JS BigInt)</th>
+                            <th data-i18n="thLibrary">Web Crypto ECDSA P-256</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-i18n="rowAlgo">Algorithm</td>
+                            <td data-i18n="rowAlgoManual">DSA over a finite field (SHA-256)</td>
+                            <td data-i18n="rowAlgoLib">ECDSA on NIST P-256 (SHA-256)</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="rowKeySize">Key size</td>
+                            <td data-i18n="rowKeySizeManual">Small primes (not secure)</td>
+                            <td data-i18n="rowKeySizeLib">256-bit elliptic curve (production-grade)</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="rowPerf">Performance</td>
+                            <td data-i18n="rowPerfManual">Slower (pure JS, trial-division primes)</td>
+                            <td data-i18n="rowPerfLib">Fast (native browser crypto)</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="rowSecurity">Security</td>
+                            <td data-i18n="rowSecurityManual">Educational only</td>
+                            <td data-i18n="rowSecurityLib">Production-ready</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="rowKeyFormat">Key format</td>
+                            <td data-i18n="rowKeyFormatManual">Raw numbers (p, q, α, β, d)</td>
+                            <td data-i18n="rowKeyFormatLib">JWK (JSON Web Key)</td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="rowUse">Use case</td>
+                            <td data-i18n="rowUseManual">Understand the algorithm</td>
+                            <td data-i18n="rowUseLib">Real applications</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2 data-i18n="benchTitle">Performance test</h2>
+                <p class="info-text" data-i18n="benchInfo">Times a full keygen + sign + verify cycle for both implementations (real wall-clock, not simulated).</p>
+                <button class="btn" id="btn-benchmark" type="button" data-i18n="btnBenchmark" onclick="runBenchmark()">Run benchmark</button>
+                <div id="benchmark-result" class="hidden">
+                    <div class="result-box">
+                        <h3 data-i18n="benchResults">Results</h3>
+                        <div id="benchmark-output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="site-footer" data-i18n="footer">Educational demo by Hadbi Aghiles · MIT License · Keys stay in your browser and are never uploaded.</footer>
+    </div>
+
+    <script src="dsa.js"></script>
+    <script src="i18n.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
